@@ -175,7 +175,7 @@ async def send_song_to_user(chat_id: int, code: str, title: str, file_id: str):
 # 5. HANDLERLAR (foydalanuvchi buyruqlari)
 # =====================================================================
 
-@router.message(CommandStart())
+@router.message(F.audio | F.document)
 async def cmd_start(message: Message):
     """/start buyrug'i — botni tanishtirish."""
     await message.answer(
