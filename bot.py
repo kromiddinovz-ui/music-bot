@@ -39,7 +39,7 @@ CHANNEL_ID = -1003982672665        # Kanalning ID raqami (bot kanalda admin bo'l
 CHANNEL_USERNAME = "@kromiddinov_music"  # Kanal username (@ belgisisiz) — obuna tugmasi uchun
 
 # Bazaga qo'shiq qo'shish huquqiga ega bo'lgan adminlar
-ADMIN_IDS = [8430954002]  # o'z Telegram ID raqamingizni kiriting
+ADMIN_IDS = [8430954002] # o'z Telegram ID raqamingizni kiriting
 
 DB_NAME = "songs.db"
 
@@ -198,7 +198,7 @@ async def cmd_add_hint(message: Message):
     )
 
 
-@router.message(F.audio)
+@router.message(F.audio | F.document)
 async def handle_admin_audio(message: Message):
     """
     Admin audio fayl yuborsa (caption: 'kod | nomi' formatida),
@@ -219,7 +219,7 @@ async def handle_admin_audio(message: Message):
     code_part, title_part = caption.split("|", maxsplit=1)
     code = code_part.strip()
     title = title_part.strip()
-    file_id = message.audio.file_id
+   file_id = message.audio.file_id if message.audio else message.document.file_id
 
     await add_song(code=code, title=title, file_id=file_id)
     await message.answer(f"✅ Qo'shiq bazaga qo'shildi!\nKod: <code>{code}</code>\nNomi: {title}")
